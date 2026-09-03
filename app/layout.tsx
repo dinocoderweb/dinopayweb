@@ -1,0 +1,4 @@
+import type { Metadata, Viewport } from "next"; import "./globals.css"; import { Header } from "@/components/layout/header"; import { Footer } from "@/components/layout/footer"; import { ServiceWorker } from "@/components/features/service-worker";
+export const metadata:Metadata={title:{default:"Luma Hub | Find better everyday",template:"%s | Luma Hub"},description:"A thoughtful marketplace for products, services and growing businesses.",manifest:"/manifest.webmanifest",appleWebApp:{capable:true,statusBarStyle:"default",title:"Luma Hub"},icons:{icon:"/icons/icon.svg",apple:"/icons/icon.svg"}};
+export const viewport:Viewport={themeColor:"#17212B",width:"device-width",initialScale:1,viewportFit:"cover"};
+export default function RootLayout({children}:{children:React.ReactNode}){return <html lang="en"><body><ServiceWorker/><Header/><main>{children}</main><Footer/></body></html>}

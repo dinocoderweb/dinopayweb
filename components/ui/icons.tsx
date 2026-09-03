@@ -1,0 +1,4 @@
+import type { SVGProps } from "react";
+export function Arrow({className,...props}: SVGProps<SVGSVGElement>) { return <svg className={className} {...props} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>; }
+export function SearchIcon({className,...props}: SVGProps<SVGSVGElement>) { return <svg className={className} {...props} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true"><circle cx="11" cy="11" r="6"/><path d="m16 16 4 4"/></svg>; }
+export function MenuIcon({className,...props}: SVGProps<SVGSVGElement>) { return <svg className={className} {...props} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>; }
