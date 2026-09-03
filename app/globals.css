@@ -1,0 +1,3 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Mono&family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap');
+@tailwind base; @tailwind components; @tailwind utilities;
+:root{color-scheme:light} *{box-sizing:border-box} html{scroll-behavior:smooth} body{margin:0;background:#F5F7F8;color:#17212B;font-family:'DM Sans',Arial,sans-serif} .font-serif{font-family:'Playfair Display',Georgia,serif}.safe-bottom{padding-bottom:env(safe-area-inset-bottom)}
