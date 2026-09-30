@@ -1,2 +1,48 @@
-import Link from "next/link"; import { Button } from "@/components/ui/button"; import { SearchForm } from "@/components/features/search-form"; import { ListingCard } from "@/components/features/listing-card"; import { Arrow } from "@/components/ui/icons"; import { categories,listings } from "@/lib/data/catalog";
-export default function Home(){return <><section className="relative overflow-hidden"><div className="mx-auto grid max-w-7xl gap-10 px-5 pb-16 pt-14 md:grid-cols-[1.08fr_.92fr] md:items-center md:py-24"><div><p className="mb-5 text-xs font-bold uppercase tracking-[.18em] text-coral">Better everyday, together</p><h1 className="max-w-2xl font-serif text-5xl leading-[1.02] md:text-7xl">Find what moves <em className="text-coral">you</em> forward.</h1><p className="mt-6 max-w-lg text-lg leading-8 text-ink/65">Discover independent products and skilled services, thoughtfully gathered in one place.</p><div className="mt-8 max-w-xl"><SearchForm/></div><div className="mt-5 flex gap-5 text-sm text-ink/60"><span>✦ Curated with care</span><span>◌ Built for people</span></div></div><div className="relative mx-auto w-full max-w-md"><div className="aspect-[.84] rounded-[2.5rem] bg-[linear-gradient(145deg,#c5dad1,#f8d7be)] p-6 shadow-soft"><div className="flex h-full flex-col justify-between rounded-[2rem] border border-white/40 bg-white/15 p-6 backdrop-blur-sm"><span className="w-fit rounded-full bg-ink px-3 py-1.5 text-xs font-bold text-white">This week&apos;s edit</span><div><p className="font-serif text-4xl leading-tight">Made for unhurried mornings.</p><Button href="/products" variant="lime" className="mt-5">Explore the edit <Arrow className="ml-2 size-4"/></Button></div></div></div><div className="absolute -bottom-3 -left-6 rounded-2xl bg-white p-4 shadow-soft"><p className="text-xs text-ink/50">Loved by the community</p><p className="mt-1 text-sm font-bold">★★★★★ <span className="font-normal">4.9/5</span></p></div></div></div></section><section className="bg-white py-16"><div className="mx-auto max-w-7xl px-5"><div className="flex items-end justify-between"><div><p className="text-xs font-bold uppercase tracking-[.18em] text-coral">Start here</p><h2 className="mt-3 font-serif text-3xl md:text-4xl">Explore your way</h2></div><Link href="/categories" className="hidden text-sm font-bold underline md:block">All categories</Link></div><div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">{categories.map(c=><Link href={`/categories#${c.id}`} key={c.id} className={`${c.color} rounded-3xl p-6 transition hover:-translate-y-1`}><span className="text-3xl">{c.icon}</span><h3 className="mt-8 font-serif text-2xl">{c.name}</h3><p className="mt-2 text-sm leading-6 text-ink/65">{c.description}</p><Arrow className="mt-5 size-5"/></Link>)}</div></div></section><section className="mx-auto max-w-7xl px-5 py-16"><div className="flex items-end justify-between"><div><p className="text-xs font-bold uppercase tracking-[.18em] text-coral">Worth knowing</p><h2 className="mt-3 font-serif text-3xl md:text-4xl">Fresh from Luma</h2></div><Link href="/products" className="text-sm font-bold underline">View all</Link></div><div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">{listings.map(item=><ListingCard item={item} key={item.id}/>)}</div></section><section className="bg-ink py-16 text-white"><div className="mx-auto grid max-w-7xl gap-8 px-5 md:grid-cols-3"><div><p className="text-xs font-bold uppercase tracking-[.18em] text-lime">The Luma difference</p><h2 className="mt-3 font-serif text-4xl">A place with standards.</h2></div>{[["01","Human selection","Every listing earns its place through quality, care and real utility."],["02","Room to grow","Find a one-off gift or a partner for the next phase of your business."],["03","Clear connection","Straightforward discovery, honest details and direct ways to get started."]].map(([n,t,c])=><div key={n} className="border-t border-white/20 pt-5"><span className="text-lime">{n}</span><h3 className="mt-4 text-xl font-semibold">{t}</h3><p className="mt-3 text-sm leading-6 text-white/65">{c}</p></div>)}</div></section><section className="mx-auto max-w-7xl px-5 py-16"><div className="rounded-4xl bg-lime px-6 py-12 text-center md:px-16"><p className="text-xs font-bold uppercase tracking-[.18em]">Bring your best work</p><h2 className="mx-auto mt-4 max-w-2xl font-serif text-4xl md:text-5xl">Have something useful to share?</h2><p className="mx-auto mt-4 max-w-xl text-ink/70">Join a growing community of people making work that matters.</p><Button href="/register" className="mt-7">Create your account</Button></div></section></>}
+import Link from "next/link";
+
+export default function Home() {
+  return (
+    <main className="landing">
+      <nav className="landing-nav">
+        <Link className="brand-lockup" href="/">
+          <span className="brand-mark">P</span>
+          <span>printdesk</span>
+        </Link>
+        <Link className="button button-dark button-small" href="/login">Staff sign in <span aria-hidden="true">↗</span></Link>
+      </nav>
+      <section className="landing-hero">
+        <div className="hero-copy">
+          <div className="eyebrow"><span className="eyebrow-dot" /> YOUR PRINT STUDIO, IN SYNC</div>
+          <h1>Every order.<br /><span>Right on schedule.</span></h1>
+          <p>Take custom print bookings, keep production moving, and track every payment from one calm, clear workspace.</p>
+          <div className="hero-actions">
+            <Link className="button button-primary" href="/login">Open your workspace <span aria-hidden="true">→</span></Link>
+            <span className="hero-caption">Set up your studio in a few minutes</span>
+          </div>
+          <div className="hero-proof"><span className="proof-avatars"><i>R</i><i>M</i><i>A</i></span><span>Made for busy print teams</span><span className="proof-star">✳</span><span>Shared across devices</span></div>
+        </div>
+        <div className="hero-visual" aria-label="Preview of the booking and order dashboard">
+          <div className="visual-glow" />
+          <div className="preview-window">
+            <div className="preview-top"><div className="preview-dots"><b /><b /><b /></div><span>Print Desk / Overview</span><span className="preview-user">DS</span></div>
+            <div className="preview-body">
+              <div className="preview-side"><div className="preview-logo">P</div><span className="side-active">▦</span><span>▣</span><span>◷</span><span>₹</span></div>
+              <div className="preview-main">
+                <div className="preview-greeting"><div><small>MONDAY, 14 JULY</small><h3>Good morning, team <span>✳</span></h3></div><button type="button">＋ New booking</button></div>
+                <div className="preview-stats"><div><small>NEW REQUESTS</small><strong>08</strong><span className="stat-up">↗ 2 today</span></div><div><small>IN PRODUCTION</small><strong>14</strong><span className="stat-muted">Across 4 stages</span></div><div><small>TO COLLECT</small><strong>₹12,450</strong><span className="stat-warn">6 balances due</span></div></div>
+                <div className="preview-orders"><div className="preview-orders-head"><b>Next on the schedule</b><span>View all →</span></div><div className="fake-order"><span className="fake-time">10:30</span><span className="fake-avatar coral">K</span><span className="fake-name"><b>Kavya R.</b><small>Custom tees · 24 pcs</small></span><span className="tag tag-violet">DESIGN REVIEW</span></div><div className="fake-order"><span className="fake-time">12:00</span><span className="fake-avatar lime">A</span><span className="fake-name"><b>Arun P.</b><small>Event hoodies · 12 pcs</small></span><span className="tag tag-green">CONFIRMED</span></div><div className="fake-order"><span className="fake-time">14:15</span><span className="fake-avatar blue">M</span><span className="fake-name"><b>Meera S.</b><small>Team jerseys · 18 pcs</small></span><span className="tag tag-orange">IN PRODUCTION</span></div></div>
+                <div className="preview-footer"><span><i /> All team bookings synced</span><span>Last updated just now</span></div>
+              </div>
+            </div>
+          </div>
+          <div className="floating-note"><span>↗</span><div><b>Payment logged</b><small>₹2,400 · UPI</small></div><i>✓</i></div>
+          <div className="floating-sticker">PRINT<br />WITH<br />PURPOSE <span>✳</span></div>
+        </div>
+      </section>
+      <section className="landing-bottom">
+        <span>BUILT FOR THE WAY YOUR STUDIO WORKS</span>
+        <div><b>Bookings</b><i>✳</i><b>Production</b><i>✳</i><b>Payments</b><i>✳</i><b>Team sync</b></div>
+      </section>
+    </main>
+  );
+}

@@ -1,1 +1,5 @@
-import { AuthForm } from "@/components/features/auth-form"; export default function Login(){return <section className="mx-auto grid min-h-[70vh] max-w-7xl place-items-center px-5 py-16"><div className="w-full max-w-md"><AuthForm/></div></section>}
+import { AuthForm } from "@/components/auth-form";
+
+export default function LoginPage() {
+  return <AuthForm />;
+}
