@@ -1,81 +1,49 @@
-# Luma Hub
+# Print Desk
 
-A mobile-first multi-service marketplace foundation for discovering thoughtful products, independent services, and future business offerings. Luma is intentionally structured as an extensible application rather than a static marketing site.
+A shared booking, schedule, order, and manual-payment workspace for a small custom-print studio. Customers send a booking request from a public link. Staff use individual accounts to manage requests, production status, quotes, and payments received by cash, UPI, or bank transfer.
 
-## Why this stack?
+## What is included
 
-- **Next.js 15 + React 19 + TypeScript** provide a stable, type-safe, SEO-friendly application foundation with file-based routes, server rendering, and a natural API boundary.
-- **Tailwind CSS** provides a small, consistent design system without locking the product into a large component framework.
-- **Capacitor 7** keeps the web app ready to become Android and iOS apps when native projects are added.
-- **PWA primitives** (manifest, service worker, offline route, and icons) make the browser app installable today.
-- The modular `lib/data` repository layer can be replaced by a database-backed service without rewriting UI components.
+- A customer booking page for contact details, product, quantity, design notes, and a requested date and time.
+- A private staff dashboard with booking status, schedule, quotes, and a payment ledger.
+- Individual staff sign-ins and invitation links. Changes are stored in one hosted database and shared across devices.
+- Database access policies that keep each studio's records private. Payment entries are append-only and cannot exceed the order's quoted balance.
+- Workspace settings for studio name, currency, schedule time zone, and public booking availability.
 
-## Technology
+This app records payments that the studio has already received. It does not collect money or store card or bank credentials.
 
-Next.js App Router, TypeScript, React, Tailwind CSS, ESLint, Capacitor, and a hand-authored service worker. No API keys or secrets are committed.
+## Set up the shared database
 
-## Project structure
+1. Create a Supabase project at https://supabase.com/.
+2. Open the project's SQL Editor and run the complete migration at supabase/migrations/202609300001_print_desk.sql.
+   Keep the migration's private schema out of Supabase's exposed API schemas; the app calls only the limited wrappers in public.
+3. In Supabase Authentication settings, enable email and password sign-in. Set the site's URL and allowed redirect URLs to your app's address. If email confirmations are enabled, staff confirm their email before signing in.
+4. Copy the Project URL and its publishable API key from the project's API settings. The older anon key is also accepted by this app while Supabase supports it.
+5. Copy .env.example to .env.local and fill in:
 
-```text
-app/                 Route pages, metadata, API health route, and offline screen
-components/layout/   Responsive shell navigation and footer
-components/ui/       Reusable primitives and icons
-components/features/ Reusable feature components (search, listing, auth, PWA)
-lib/data/            Replaceable sample catalog data layer
-services/            Reserved for future API/database service implementations
-types/               Shared domain types
-public/              Manifest, icons, and service worker
-```
+       NEXT_PUBLIC_SUPABASE_URL=https://your-project-id.supabase.co
+       NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=sb_publishable_your_key
 
-## Getting started
+   The publishable key is intended for browser apps; database row-level security controls access. Never put a Supabase secret or service-role key in a NEXT_PUBLIC_ variable or commit it to GitHub.
 
-```bash
-cp .env.example .env.local
-npm install
-npm run dev
-```
+## Run locally
 
-Open [http://localhost:3000](http://localhost:3000). The supplied environment variables are placeholders for future database and authentication providers; do not expose secrets through `NEXT_PUBLIC_` variables.
+Use Node.js 20.9 or newer and pnpm:
 
-## Quality checks and production
+    pnpm install
+    pnpm dev
 
-```bash
-npm run lint
-npm run typecheck
-npm run build
-npm run start
-```
+Open http://localhost:3000. Create the first account and studio workspace. The owner can generate an invite link in Settings and send it to a teammate; that person accepts it using the invited email address and creates an individual login.
 
-`npm run build` uses static export (`out/`), which is suitable for Capacitor. The current `app/api/health` route is available in development server mode; move health checks to an external/server deployment if static hosting is used.
+## Deploy
 
-## PWA
+Deploy this Next.js application to a host that supports the Next.js App Router (for example, Vercel). Add the same two public environment variables in the hosting project's settings, then deploy. Add the deployed app URL to Supabase's allowed redirect URLs. Share the booking link shown under Settings.
 
-Run a production build and serve it using a static server or deploy the `out/` directory over HTTPS. Visit the site once online, then use the browser install prompt/menu. The service worker caches the app shell and visited same-origin GET resources and returns `/offline` for unavailable navigations. Use Chrome DevTools → Application → Service Workers/Manifest to validate installability and simulate offline behavior.
+The first studio defaults to INR and Asia/Kolkata. The owner can change currency and time zone before the first booking; they lock after an order is added so recorded amounts and requested times are not silently reinterpreted.
 
-## Capacitor: Android and iOS
+## Notes
 
-The Capacitor configuration points to the generated `out/` directory.
-
-```bash
-npm run cap:sync
-npx cap add android
-npx cap add ios
-npm run cap:sync
-npm run cap:android
-npm run cap:ios
-```
-
-After opening Android Studio, select **Build → Generate Signed Bundle / APK**:
-
-- Choose **APK** for a directly installable Android artifact.
-- Choose **Android App Bundle** for the Play Store `.aab` artifact.
-
-For iOS, open the generated project in Xcode, configure signing, and archive the app. Native platform folders are intentionally ignored by Git until the owning team decides to commit generated platform projects.
-
-## Future architecture recommendations
-
-1. Replace `lib/data/catalog.ts` with repository interfaces backed by Postgres/Prisma or a managed data service.
-2. Add an auth provider behind a dedicated `services/auth` boundary and protect `/dashboard` with middleware.
-3. Add a transactional search service and product/service detail routes.
-4. Send contact and newsletter submissions to a validated server endpoint with rate limiting.
-5. Add analytics, error monitoring, image optimization/CDN, and CI checks before public launch.
+- The database migration is required before the app can create workspaces or accept bookings.
+- Public booking requests are unconfirmed until the studio changes their status.
+- Team invite links expire after seven days and can only be accepted by the invited email address.
+- Bookings are retained as an order history; cancel an order instead of deleting it. Payment entries cannot be edited or deleted from the app.
